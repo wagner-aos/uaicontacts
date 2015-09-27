@@ -14,20 +14,23 @@
 						   http://www.springframework.org/schema/context http://www.springframework.org/schema/task/spring-context-3.0.xsd">
 
     <!-- JPA Configurations -->
-    <jee:jndi-lookup id="myContactDataSource" jndi-name="jdbc/tomcatDataSource" lookup-on-startup="false"
+    <jee:jndi-lookup id="uaiContactsDS" jndi-name="java:jboss/datasources/uaiContactsDS" lookup-on-startup="false"
                      proxy-interface="javax.sql.DataSource"/>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>
+    
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+    
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="persistenceProviderClass" value="org.hibernate.ejb.HibernatePersistence"/>
-        <property name="dataSource" ref="myContactDataSource"/>
+        <!-- <property name="persistenceProviderClass" value="org.hibernate.ejb.HibernatePersistence"/> -->
+        <property name="persistenceProviderClass" value="org.hibernate.jpa.HibernatePersistenceProvider"/>
+        <property name="dataSource" ref="uaiContactsDS"/>
         <property name="persistenceUnitName" value="uaiContactsPU"/>
         <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
-
+        <!-- <property name="packagesToScan" value="uaiContacts.model" /> -->
     </bean>
 
     <!-- Spring Data -->
